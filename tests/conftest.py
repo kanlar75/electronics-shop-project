@@ -7,3 +7,6 @@ from src.item import Item
 def creat_obj():
     obj = Item("Смартфон", 10000, 20)
     return obj
+
+
+
