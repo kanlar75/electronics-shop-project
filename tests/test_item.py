@@ -1,12 +1,4 @@
-import pytest
-
 from src.item import Item
-
-
-@pytest.fixture
-def creat_obj():
-    obj = Item("Смартфон", 10000, 20)
-    return obj
 
 
 def test_calculate_total_price(creat_obj):
@@ -14,10 +6,13 @@ def test_calculate_total_price(creat_obj):
 
 
 def test_apply_discount(creat_obj):
-    Item.pay_rate = 0.5
-    assert creat_obj.apply_discount() == creat_obj.price
+    Item.pay_rate = 0.7
+    creat_obj.apply_discount()
+    assert creat_obj.price == 7000
 
 
 def test_all(creat_obj):
-    assert len(Item.all) == 2
     assert isinstance(Item.all, list)
+    for obj in Item.all:
+        assert isinstance(obj, Item)
+
