@@ -1,5 +1,4 @@
 import csv
-import re
 
 
 class Item:
@@ -22,9 +21,9 @@ class Item:
         self.quantity = quantity
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls, file_path="items.csv"):
 
-        with open("items.csv") as csvfile:
+        with open(file_path) as csvfile:
             readers = csv.DictReader(csvfile)
             for reader in readers:
                 name = reader['name']
