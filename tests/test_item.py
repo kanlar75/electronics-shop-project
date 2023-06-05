@@ -47,7 +47,7 @@ def test_string_to_number(str_, expectation):
 
 
 # проверка инициализации экземпляров класса `Item` данными из файла
-# _src/items.csv_
+# src/items.csv
 def test_instantiate_from_csv(temp_file_csv):
     Item.instantiate_from_csv(temp_file_csv)
     assert len(Item.all) == 5
