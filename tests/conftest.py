@@ -3,11 +3,18 @@ import csv
 import pytest as pytest
 
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.fixture
-def test_obj():
+def test_obj_item():
     obj = Item("Смартфон", 10000, 20)
+    return obj
+
+
+@pytest.fixture
+def test_obj_phone():
+    obj = Phone("iPhone 14", 120_000, 5, 2)
     return obj
 
 
@@ -30,11 +37,11 @@ def temp_file_csv(tmpdir_factory, csv_data):
     директории.
     """
     temp_data = csv_data
-    file_path = tmpdir_factory.mktemp('data').join('test_items.csv')
+    file_ = tmpdir_factory.mktemp('data').join('test_items.csv')
     fieldnames = ['name', 'price', 'quantity']
 
-    with open(file_path, 'w', newline='') as f:
+    with open(file_, 'w', newline='') as f:
         test_file = csv.DictWriter(f, fieldnames=fieldnames)
         test_file.writeheader()
         test_file.writerows(temp_data)
-    return file_path
+    return file_
