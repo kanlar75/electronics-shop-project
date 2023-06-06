@@ -27,6 +27,12 @@ class Item:
     def __str__(self):
         return self.__name
 
+    def __add__(self, other):
+        """ Возвращает сумму двух экземпляров """
+
+        obj = self.validate(other)
+        return self.quantity + obj
+
     @classmethod
     def instantiate_from_csv(cls, file_path="..\src\items.csv"):
         """ Инициализирует экземпляры класса Item из файла 'items.csv'. """
@@ -39,6 +45,13 @@ class Item:
                 price = reader['price']
                 quantity = reader['quantity']
                 Item(name=name, price=price, quantity=quantity)
+
+    @classmethod
+    def validate(cls, obj):
+        if not isinstance(obj, Item):
+            raise TypeError('Объект должен быть экземпляром класса '
+                            'Item или Phone!')
+        return obj.quantity
 
     @staticmethod
     def string_to_number(str_):
