@@ -18,6 +18,7 @@ class Item:
         self.__name = name
         self.price = price
         self.quantity = quantity
+        self.all.append(self)
 
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.__name}', {self.price}," \
@@ -27,21 +28,21 @@ class Item:
         return self.__name
 
     @classmethod
-    def instantiate_from_csv(cls, file_path="items.csv"):
+    def instantiate_from_csv(cls, file_path="..\src\items.csv"):
         """ Инициализирует экземпляры класса Item из файла 'items.csv'. """
 
+        cls.all = []
         with open(file_path) as csvfile:
             readers = csv.DictReader(csvfile)
             for reader in readers:
                 name = reader['name']
                 price = reader['price']
                 quantity = reader['quantity']
-                new_ = Item(name=name, price=price, quantity=quantity)
-                cls.all.append(new_)
+                Item(name=name, price=price, quantity=quantity)
 
     @staticmethod
     def string_to_number(str_):
-        """ Возвращает длину переданной строки. """
+        """ Возвращает длину переданной строки-числа. """
 
         return int(float(str_))
 
@@ -75,4 +76,4 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
 
-        self.price = self.price * Item.pay_rate
+        self.price = self.price * self.pay_rate
