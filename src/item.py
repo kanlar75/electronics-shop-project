@@ -21,10 +21,14 @@ class Item:
         self.all.append(self)
 
     def __repr__(self):
+        """ __repr__ """
+
         return f"{self.__class__.__name__}('{self.__name}', {self.price}," \
                f" {self.quantity})"
 
     def __str__(self):
+        """ __str__ """
+
         return self.__name
 
     def __add__(self, other):
@@ -48,6 +52,8 @@ class Item:
 
     @classmethod
     def validate(cls, obj):
+        """ Проверка на соответствие классу. """
+
         if not isinstance(obj, Item):
             raise TypeError('Объект должен быть экземпляром класса '
                             'Item или Phone!')
@@ -67,8 +73,10 @@ class Item:
 
     @name.setter
     def name(self, value):
-        """ Устанавливает новое значение атрибуту name, с проверкой на длину
-        наименования (не больше 10 символов)."""
+        """
+        Устанавливает новое значение атрибуту name, с проверкой на длину
+        наименования (не больше 10 символов).
+        """
 
         if len(value.strip()) <= 10:
             self.__name = value
