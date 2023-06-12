@@ -18,30 +18,50 @@ class Item:
         self.__name = name
         self.price = price
         self.quantity = quantity
+        self.all.append(self)
 
     def __repr__(self):
+        """ __repr__ """
+
         return f"{self.__class__.__name__}('{self.__name}', {self.price}," \
                f" {self.quantity})"
 
     def __str__(self):
+        """ __str__ """
+
         return self.__name
 
+    def __add__(self, other):
+        """ Возвращает сумму двух экземпляров """
+
+        obj = self.validate(other)
+        return self.quantity + obj
+
     @classmethod
-    def instantiate_from_csv(cls, file_path="items.csv"):
+    def instantiate_from_csv(cls, file_path="..\src\items.csv"):
         """ Инициализирует экземпляры класса Item из файла 'items.csv'. """
 
+        cls.all = []
         with open(file_path) as csvfile:
             readers = csv.DictReader(csvfile)
             for reader in readers:
                 name = reader['name']
                 price = reader['price']
                 quantity = reader['quantity']
-                new_ = Item(name=name, price=price, quantity=quantity)
-                cls.all.append(new_)
+                Item(name=name, price=price, quantity=quantity)
+
+    @classmethod
+    def validate(cls, obj):
+        """ Проверка на соответствие классу. """
+
+        if not isinstance(obj, Item):
+            raise TypeError('Объект должен быть экземпляром класса '
+                            'Item или Phone!')
+        return obj.quantity
 
     @staticmethod
     def string_to_number(str_):
-        """ Возвращает длину переданной строки. """
+        """ Возвращает длину переданной строки-числа. """
 
         return int(float(str_))
 
@@ -53,8 +73,10 @@ class Item:
 
     @name.setter
     def name(self, value):
-        """ Устанавливает новое значение атрибуту name, с проверкой на длину
-        наименования (не больше 10 символов)."""
+        """
+        Устанавливает новое значение атрибуту name, с проверкой на длину
+        наименования (не больше 10 символов).
+        """
 
         if len(value.strip()) <= 10:
             self.__name = value
@@ -75,4 +97,4 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
 
-        self.price = self.price * Item.pay_rate
+        self.price = self.price * self.pay_rate
