@@ -4,7 +4,7 @@ from src.item import Item
 class Phone(Item):
 
     def __init__(self, name, price, quantity, number_of_sim):
-        """ Инициализатор. """
+        """ Инициализатор Phone. """
 
         super().__init__(name, price, quantity)
 
