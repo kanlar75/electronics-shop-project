@@ -8,12 +8,16 @@ from src.phone import Phone
 
 @pytest.fixture
 def test_obj_item():
+    """ Тестовый объект класса Item. """
+
     obj = Item("Смартфон", 10000, 20)
     return obj
 
 
 @pytest.fixture
 def test_obj_phone():
+    """ Тестовый объект класса Phone. """
+
     obj = Phone("iPhone 14", 120_000, 5, 2)
     return obj
 
@@ -21,6 +25,7 @@ def test_obj_phone():
 @pytest.fixture(scope='module')
 def csv_data():
     """ Содержит данные csv для тестов. """
+
     csv_ = [{'name': 'Смартфон', 'price': 100, 'quantity': 1},
             {'name': 'Ноутбук', 'price': 1000, 'quantity': 3},
             {'name': 'Кабель', 'price': 10, 'quantity': 5},
@@ -36,6 +41,7 @@ def temp_file_csv(tmpdir_factory, csv_data):
     Записываем тестовые данные в файл 'test_items.csv' во временной
     директории.
     """
+
     temp_data = csv_data
     file_ = tmpdir_factory.mktemp('data').join('test_items.csv')
     fieldnames = ['name', 'price', 'quantity']
