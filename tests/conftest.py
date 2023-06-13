@@ -3,6 +3,7 @@ import csv
 import pytest as pytest
 
 from src.item import Item
+from src.keyboard import KeyBoard
 from src.phone import Phone
 
 
@@ -19,6 +20,14 @@ def test_obj_phone():
     """ Тестовый объект класса Phone. """
 
     obj = Phone("iPhone 14", 120_000, 5, 2)
+    return obj
+
+
+@pytest.fixture
+def test_obj_keyboard():
+    """ Тестовый объект класса KeyBoard. """
+
+    obj = KeyBoard('Dark Project KD87A', 9600, 5)
     return obj
 
 
