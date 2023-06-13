@@ -15,6 +15,7 @@ class Item:
         price: Цена за единицу товара.
         quantity: Количество товара в магазине.
         """
+
         self.__name = name
         self.price = price
         self.quantity = quantity
