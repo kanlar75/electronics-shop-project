@@ -12,7 +12,7 @@ class MixinLayout:
         else:
             self._language = "EN"
         MixinLayout.layout = self._language
-
+        return self
 
 class KeyBoard(Item, MixinLayout):
 
