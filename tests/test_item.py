@@ -79,4 +79,4 @@ def test_validate(test_obj_item):
     with pytest.raises(TypeError):
         test_obj_item.validate("test")
         test_obj_item.validate(1)
-    assert test_obj_item.validate(test_obj_item) == 20
+    assert test_obj_item.validate(test_obj_item) is True
