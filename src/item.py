@@ -1,6 +1,16 @@
 import csv
 
 
+class InstantiateCSVError(Exception):
+
+    def __init__(self, message='Файл item.csv поврежден'):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -15,10 +25,10 @@ class Item:
         price: Цена за единицу товара.
         quantity: Количество товара в магазине.
         """
-
         self.__name = name
         self.price = price
         self.quantity = quantity
+
         self.all.append(self)
 
     def __repr__(self):
@@ -43,13 +53,25 @@ class Item:
         """ Инициализирует экземпляры класса Item из файла 'items.csv'. """
 
         cls.all = []
-        with open(file_path) as csvfile:
-            readers = csv.DictReader(csvfile)
-            for reader in readers:
-                name = reader['name']
-                price = reader['price']
-                quantity = reader['quantity']
-                Item(name=name, price=price, quantity=quantity)
+        try:
+            with open(file_path) as csvfile:
+                readers = csv.DictReader(csvfile)
+                for reader in readers:
+                    if len(reader) != 3:
+                        raise InstantiateCSVError()
+                    try:
+                        name = reader['name']
+                        price = reader['price']
+                        quantity = reader['quantity']
+                    except InstantiateCSVError as message:
+                        print(message)
+                    else:
+                        Item(name=name, price=price, quantity=quantity)
+        except FileNotFoundError:
+            print('Отсутствует файл items.csv')
+            # exit()
+
+
 
     @classmethod
     def validate(cls, obj):
@@ -99,3 +121,8 @@ class Item:
         """
 
         self.price = self.price * self.pay_rate
+
+
+file_path = "item*s.csv"
+Item.instantiate_from_csv('../src/items_bad.csv')
+print(Item.all)
