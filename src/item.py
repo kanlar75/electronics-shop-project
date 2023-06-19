@@ -3,12 +3,11 @@ import csv
 
 class InstantiateCSVError(Exception):
 
-    def __init__(self, message='Файл item.csv поврежден'):
-        self.message = message
-        super().__init__(self.message)
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
 
     def __str__(self):
-        return self.message
+        return f'{self.message}'
 
 
 class Item:
@@ -57,21 +56,20 @@ class Item:
             with open(file_path) as csvfile:
                 readers = csv.DictReader(csvfile)
                 for reader in readers:
-                    if len(reader) != 3:
-                        raise InstantiateCSVError()
                     try:
+                        if len(reader) != 3:
+                            raise InstantiateCSVError()
+                    except InstantiateCSVError as message:
+                        print(message)
+                        return message
+                        # break
+                    else:
                         name = reader['name']
                         price = reader['price']
                         quantity = reader['quantity']
-                    except InstantiateCSVError as message:
-                        print(message)
-                    else:
                         Item(name=name, price=price, quantity=quantity)
         except FileNotFoundError:
-            print('Отсутствует файл items.csv')
-            # exit()
-
-
+            print('FileNotFoundError: Отсутствует файл items.csv')
 
     @classmethod
     def validate(cls, obj):
@@ -122,7 +120,3 @@ class Item:
 
         self.price = self.price * self.pay_rate
 
-
-file_path = "item*s.csv"
-Item.instantiate_from_csv('../src/items_bad.csv')
-print(Item.all)
