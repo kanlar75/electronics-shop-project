@@ -60,3 +60,34 @@ def temp_file_csv(tmpdir_factory, csv_data):
         test_file.writeheader()
         test_file.writerows(temp_data)
     return file_
+
+
+@pytest.fixture(scope='module')
+def csv_data_broken():
+    """ Содержит данные csv без последней колонки для тестов. """
+
+    csv_broken = [{'name': 'Смартфон', 'price': 100},
+            {'name': 'Ноутбук', 'price': 1000},
+            {'name': 'Кабель', 'price': 10},
+            {'name': 'Мышка', 'price': 50},
+            {'name': 'Клавиатура', 'price': 75}]
+
+    return csv_broken
+
+
+@pytest.fixture(scope='module')
+def temp_file_csv_broken(tmpdir_factory, csv_data_broken):
+    """
+    Записываем тестовые данные в файл 'test_items_broken.csv' во временной
+    директории.
+    """
+
+    temp_data = csv_data_broken
+    file_broken = tmpdir_factory.mktemp('data').join('test_items_broken.csv')
+    fieldnames = ['name', 'price']
+
+    with open(file_broken, 'w', newline='') as f:
+        test_file = csv.DictWriter(f, fieldnames=fieldnames)
+        test_file.writeheader()
+        test_file.writerows(temp_data)
+    return file_broken
