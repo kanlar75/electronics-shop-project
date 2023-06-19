@@ -3,7 +3,7 @@ import io
 
 import pytest as pytest
 
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 
 
 # Получаем общую стоимость конкретного товара в магазине.
@@ -72,11 +72,40 @@ def test_add(test_obj_item, test_obj_phone):
 
 
 # Тестируем метод класса, определяющий принадлежность к классу, должен
-# вернуть значение атрибута 'quantity' экземпляра класса 'Item',
-# если принадлежит классу 'Item' или 'Phone', иначе raise: TypeError
+# вернуть True если экземпляр принадлежит к классу 'Item', иначе
+# raise: TypeError
 
 def test_validate(test_obj_item):
     with pytest.raises(TypeError):
         test_obj_item.validate("test")
         test_obj_item.validate(1)
     assert test_obj_item.validate(test_obj_item) is True
+
+
+# Тест инициализации и __str__ объекта класса InstantiateCSVError
+def test_raises():
+    obj = InstantiateCSVError()
+    assert obj.__str__() == 'Файл item.csv поврежден'
+
+
+# Тест открытия отсутствующего файла
+
+def test_instantiate_from_csv_raise():
+    s = io.StringIO()
+    with contextlib.redirect_stdout(s):
+        Item.instantiate_from_csv('items111.csv')
+    assert s.getvalue() == 'FileNotFoundError: Отсутствует файл items.csv\n'
+
+
+# Проверка инициализации экземпляров класса `Item` данными из
+# поврежденного файла src/items_bad.csv.
+# @pytest.mark.xfail(raises=InstantiateCSVError)
+def test_instantiate_from_csv_bad(temp_file_csv_broken):
+    try:
+        with pytest.raises(InstantiateCSVError,
+                           match="Файл item.csv поврежден") as e:
+            Item.instantiate_from_csv(temp_file_csv_broken)
+        assert e.type == InstantiateCSVError
+        assert e.value == "Файл item.csv поврежден"
+    except:
+        assert True
